@@ -1,20 +1,24 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import styles from './Navbar.module.css'
 
 const Navbar = () => {
   return (
-    <div /*className='flex flex-row gap-4'*/
-    style={{alignContent:'center',margin:10,display:'flex',gap:"100px"}}>
-      <NavLink to='/'>
+    <nav className={styles.navbar}>
+      <div className={styles.logo}>📝 NotesApp</div>
+      <NavLink
+        to='/'
+        className={({ isActive }) => isActive ? styles.active : ''}
+      >
         Home
       </NavLink>
-      <NavLink to='/pastes'>
-        All pastes
+      <NavLink
+        to='/pastes'
+        className={({ isActive }) => isActive ? styles.active : ''}
+      >
+        All Notes
       </NavLink>
-      {/* <NavLink to='/pastes/:id'>
-        ViewPastes
-      </NavLink> */}
-    </div>
+    </nav>
   )
 }
 

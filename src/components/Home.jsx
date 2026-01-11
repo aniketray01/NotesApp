@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { add, update } from '../redux/Slice';
 import { nanoid } from "@reduxjs/toolkit";
+import styles from './Home.module.css';
 
 const Home = () => {
   const [Title, setTitle] = useState('');
@@ -26,6 +27,7 @@ const Home = () => {
     }
 
   }, [pastid, allpastes]);
+
   function Create() {
     const data = { Title, value, id: pastid || nanoid(), createdAt: new Date().toISOString() };
     if (pastid) {
@@ -39,35 +41,63 @@ const Home = () => {
     setvalue('');
     setsearchParam({});
   }
+
+  function handleClear() {
+    setTitle('');
+    setvalue('');
+    setsearchParam({});
+  }
+
   return (
-    <div>
-      <input
-        type="text"
-        placeholder='Enter Title here'
-        value={Title}
-        style={{ width: 500, padding: 10, margin: 20, border: '5px solid white' }}
-        onChange={(e) => { setTitle(e.target.value) }}
-      />
-      {/* value :{Title} */}
-
-      <button style={{ border: '3px solid white' }} onClick={Create}>
-        {pastid ? "Update" : "Create"}
-
-      </button>
-      <br />
-      <div>
-        <textarea
-          value={value}
-          placeholder='Enter text'
-          //   type='text'    
-          onChange={(e) => { setvalue(e.target.value) }}
-          style={{ width: 500, padding: 10, margin: 20, border: '5px solid white' }}
-          rows={10} ></textarea>
-
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>
+          {pastid ? '✏️ Edit Note' : '✨ Create New Note'}
+        </h1>
+        <p className={styles.subtitle}>
+          {pastid ? 'Update your note below' : 'Capture your thoughts and ideas'}
+        </p>
       </div>
-      {/* {value} */}
 
+      <div className={styles.form}>
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Title</label>
+          <input
+            type="text"
+            placeholder='Enter a catchy title...'
+            value={Title}
+            className={styles.input}
+            onChange={(e) => { setTitle(e.target.value) }}
+          />
+        </div>
 
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Content</label>
+          <textarea
+            value={value}
+            placeholder='Write your note here...'
+            onChange={(e) => { setvalue(e.target.value) }}
+            className={`${styles.input} ${styles.textarea}`}
+            rows={10}
+          ></textarea>
+        </div>
+
+        <div className={styles.buttonGroup}>
+          <button
+            className={`${styles.button} ${styles.buttonPrimary}`}
+            onClick={Create}
+            disabled={!Title.trim() || !value.trim()}
+          >
+            {pastid ? "💾 Update Note" : "✨ Create Note"}
+          </button>
+          <button
+            className={`${styles.button} ${styles.buttonSecondary}`}
+            onClick={handleClear}
+          >
+            🗑️ Clear
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
