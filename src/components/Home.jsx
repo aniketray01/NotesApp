@@ -51,7 +51,7 @@ const Home = () => {
       {/* value :{Title} */}
 
       <button style={{ border: '3px solid white' }} onClick={Create}>
-        {pastid ? "Update" : "Createee"}
+        {pastid ? "Update" : "Create"}
 
       </button>
       <br />
