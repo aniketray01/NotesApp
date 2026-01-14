@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { addPaste, updatePaste } from '../redux/Slice';
+import { add, update } from '../redux/Slice';
 import { nanoid } from "@reduxjs/toolkit";
 import styles from './Home.module.css';
 
@@ -19,36 +19,23 @@ const Home = () => {
       setvalue("");
     };
 
-    // --- CHANGED: Check both 'id' and '_id' for compatibility ---
-    const paste = allpastes.find((p) => (p.id === pastid || p._id === pastid));
+    const paste = allpastes.find((p) => p.id === pastid);
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);
+
     }
 
   }, [pastid, allpastes]);
 
   function Create() {
-    // --- CHANGED: Dispatch async thunks for MongoDB operations ---
+    const data = { Title, value, id: pastid || nanoid(), createdAt: new Date().toISOString() };
     if (pastid) {
-      const existingPaste = allpastes.find((p) => (p.id === pastid || p._id === pastid));
-      const data = {
-        ...existingPaste,
-        Title,
-        value,
-      };
-      // Dispatch update to MongoDB
-      dispatch(updatePaste(data));
+      dispatch(update(data));
+
     }
     else {
-      const data = {
-        Title,
-        value,
-        id: nanoid(),
-        createdAt: new Date().toISOString()
-      };
-      // Dispatch add to MongoDB
-      dispatch(addPaste(data));
+      dispatch(add(data));
     }
     setTitle('');
     setvalue('');

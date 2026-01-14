@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { fetchPastes } from '../redux/Slice';
+import { add, update } from '../redux/Slice';
+import { nanoid } from "@reduxjs/toolkit";
 import styles from './ViewPastes.module.css';
 
 const ViewPastes = () => {
@@ -18,17 +19,28 @@ const ViewPastes = () => {
       setvalue("");
     };
 
-    // --- CHANGED: Support both 'id' and '_id' from MongoDB ---
-    const paste = allpastes.find((p) => (p.id === pastid || p._id === pastid));
+    const paste = allpastes.find((p) => p.id === pastid);
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);
+
     }
 
   }, [pastid, allpastes]);
 
-  // Create function removed as it's not used in ViewPastes (Read-only)
+  function Create() {
+    const data = { Title, value, id: pastid || nanoid(), createdAt: new Date().toISOString() };
+    if (pastid) {
+      dispatch(update(data));
 
+    }
+    else {
+      dispatch(add(data));
+    }
+    setTitle('');
+    setvalue('');
+    setsearchParam({});
+  }
 
   return (
     <div className={styles.container}>

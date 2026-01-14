@@ -1,6 +1,3 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { fetchPastes } from './redux/Slice'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import Pastes from './components/Pastes'
@@ -37,12 +34,8 @@ const router = createBrowserRouter(
 )
 
 function App() {
-  const dispatch = useDispatch();
 
-  // --- CHANGED: Fetch notes from MongoDB on initial load ---
-  useEffect(() => {
-    dispatch(fetchPastes());
-  }, [dispatch]);
+
 
   return (
     <>

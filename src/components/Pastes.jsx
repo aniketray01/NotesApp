@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { remove } from '../redux/Slice'
+import { deletePaste } from '../redux/Slice'
 import { useNavigate } from "react-router-dom";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import toast from 'react-hot-toast';
@@ -11,9 +11,9 @@ const Pastes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const Removed = (data) => {
-    dispatch(remove(data));
-    toast.success('Note deleted successfully!');
+  // --- CHANGED: Dispatch deletePaste (async) instead of remove ---
+  const Removed = (id) => {
+    dispatch(deletePaste(id));
   }
 
   const formatDate = (dateString) => {
@@ -46,43 +46,48 @@ const Pastes = () => {
         </div>
       ) : (
         <div className={styles.grid}>
-          {allpaste.map((paste) => (
-            <div key={paste.id} className={styles.card}>
-              <h3 className={styles.cardTitle}>{paste.Title}</h3>
-              <p className={styles.cardContent}>{paste.value}</p>
-              <div className={styles.cardDate}>
-                🕒 {formatDate(paste.createdAt)}
-              </div>
-              <div className={styles.actions}>
-                <button
-                  className={`${styles.actionButton} ${styles.viewButton}`}
-                  onClick={() => navigate(`/viewpastes?id=${paste.id}`)}
-                >
-                  👁️ View
-                </button>
-                <button
-                  className={`${styles.actionButton} ${styles.editButton}`}
-                  onClick={() => navigate(`/?pasteid=${paste.id}`)}
-                >
-                  ✏️ Edit
-                </button>
-                <CopyToClipboard
-                  text={paste.value}
-                  onCopy={() => toast.success("Copied to clipboard!")}
-                >
-                  <button className={`${styles.actionButton} ${styles.copyButton}`}>
-                    📋 Copy
+          {allpaste.map((paste) => {
+            // MongoDB uses _id, but we also kept 'id' for compatibility
+            const displayId = paste._id || paste.id;
+
+            return (
+              <div key={displayId} className={styles.card}>
+                <h3 className={styles.cardTitle}>{paste.Title}</h3>
+                <p className={styles.cardContent}>{paste.value}</p>
+                <div className={styles.cardDate}>
+                  🕒 {formatDate(paste.createdAt)}
+                </div>
+                <div className={styles.actions}>
+                  <button
+                    className={`${styles.actionButton} ${styles.viewButton}`}
+                    onClick={() => navigate(`/viewpastes?id=${displayId}`)}
+                  >
+                    👁️ View
                   </button>
-                </CopyToClipboard>
-                <button
-                  className={`${styles.actionButton} ${styles.deleteButton}`}
-                  onClick={() => Removed(paste.id)}
-                >
-                  🗑️ Delete
-                </button>
+                  <button
+                    className={`${styles.actionButton} ${styles.editButton}`}
+                    onClick={() => navigate(`/?pasteid=${displayId}`)}
+                  >
+                    ✏️ Edit
+                  </button>
+                  <CopyToClipboard
+                    text={paste.value}
+                    onCopy={() => toast.success("Copied to clipboard!")}
+                  >
+                    <button className={`${styles.actionButton} ${styles.copyButton}`}>
+                      📋 Copy
+                    </button>
+                  </CopyToClipboard>
+                  <button
+                    className={`${styles.actionButton} ${styles.deleteButton}`}
+                    onClick={() => Removed(displayId)}
+                  >
+                    🗑️ Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
