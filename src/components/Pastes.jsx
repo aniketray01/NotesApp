@@ -8,8 +8,17 @@ import styles from './Pastes.module.css';
 
 const Pastes = () => {
   const allpaste = useSelector((state) => state.paste.pastes);
+  const [searchTerm, setSearchTerm] = React.useState(""); // State for search term
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Filter notes based on search term (Title or Content)
+  const filteredData = Array.isArray(allpaste)
+    ? allpaste.filter((paste) =>
+      paste.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      paste.value.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    : [];
 
   // --- CHANGED: Dispatch deletePaste (async) instead of remove ---
   const Removed = (id) => {
@@ -36,17 +45,31 @@ const Pastes = () => {
         </p>
       </div>
 
-      {allpaste.length === 0 ? (
+      <div className={styles.searchContainer}>
+        <input
+          type="text"
+          placeholder="🔍 Search notes by title or content..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className={styles.searchInput}
+        />
+      </div>
+
+      {filteredData.length === 0 ? (
         <div className={styles.emptyState}>
-          <div className={styles.emptyIcon}>📝</div>
-          <h2 className={styles.emptyTitle}>No notes yet</h2>
+          <div className={styles.emptyIcon}>{searchTerm ? '🔍' : '📝'}</div>
+          <h2 className={styles.emptyTitle}>
+            {searchTerm ? 'No matching notes' : 'No notes yet'}
+          </h2>
           <p className={styles.emptyText}>
-            Create your first note to get started!
+            {searchTerm
+              ? `No results found for "${searchTerm}"`
+              : 'Create your first note to get started!'}
           </p>
         </div>
       ) : (
         <div className={styles.grid}>
-          {allpaste.map((paste) => {
+          {filteredData.map((paste) => {
             // MongoDB uses _id, but we also kept 'id' for compatibility
             const displayId = paste._id || paste.id;
 
