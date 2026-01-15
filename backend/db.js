@@ -5,8 +5,10 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGO_URL);
         console.log("MongoDB Connected");
     } catch (error) {
-        console.error(error);
-        process.exit(1);
+        console.error("MongoDB Connection Error:", error.message);
+        console.log("Will retry connection on next request...");
+        // Don't exit - let the server start anyway
+        // MongoDB will auto-reconnect when available
     }
 };
 
