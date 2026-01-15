@@ -12,6 +12,7 @@ connectDB();
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+// --- CHANGED: CORS configuration to allow Vercel/Render communication ---
 app.use(cors());
 app.use(express.json());
 app.use("/api/pastes", pasteRoutes);

@@ -3,7 +3,8 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 
 // Base URL for the backend API
-const API_URL = "http://localhost:5000/api/pastes";
+// --- CHANGED: Use environment variable for production (Render URL) ---
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/pastes";
 
 // --- CHANGED: Added Async Thunks for MongoDB DB Operations ---
 
