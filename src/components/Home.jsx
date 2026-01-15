@@ -8,6 +8,7 @@ import styles from './Home.module.css';
 const Home = () => {
   const [Title, setTitle] = useState('');
   const [value, setvalue] = useState('');
+  const [label, setLabel] = useState('none'); // --- ADDED: State for label ---
   const [searchParam, setsearchParam] = useSearchParams();
   const pastid = searchParam.get("pasteid");
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const Home = () => {
     if (!pastid) {
       setTitle("");
       setvalue("");
+      setLabel("none"); // Reset label when not editing
     };
 
     // --- CHANGED: Check both 'id' and '_id' for compatibility ---
@@ -25,6 +27,7 @@ const Home = () => {
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);
+      setLabel(paste.label || "none"); // Set label from existing paste
     }
 
   }, [pastid, allpastes]);
@@ -32,11 +35,11 @@ const Home = () => {
   function Create() {
     // --- CHANGED: Dispatch async thunks for MongoDB operations ---
     if (pastid) {
-      const existingPaste = allpastes.find((p) => (p.id === pastid || p._id === pastid));
       const data = {
         ...existingPaste,
         Title,
         value,
+        label, // Include label in update
       };
       // Dispatch update to MongoDB
       dispatch(updatePaste(data));
@@ -45,6 +48,7 @@ const Home = () => {
       const data = {
         Title,
         value,
+        label, // Include label in creation
         id: nanoid(),
         createdAt: new Date().toISOString()
       };
@@ -53,12 +57,14 @@ const Home = () => {
     }
     setTitle('');
     setvalue('');
+    setLabel('none'); // Reset label after create/update
     setsearchParam({});
   }
 
   function handleClear() {
     setTitle('');
     setvalue('');
+    setLabel('none');
     setsearchParam({});
   }
 
@@ -94,6 +100,22 @@ const Home = () => {
             className={`${styles.input} ${styles.textarea}`}
             rows={10}
           ></textarea>
+        </div>
+
+        <div className={styles.inputGroup}>
+          <label className={styles.label}>Select Label</label>
+          <div className={styles.labelGroup}>
+            {["none", "Minato", "Kushina"].map((l) => (
+              <button
+                key={l}
+                type="button"
+                className={`${styles.labelButton} ${label === l ? styles.labelActive : ''}`}
+                onClick={() => setLabel(l)}
+              >
+                {l === "none" ? "None" : l}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className={styles.buttonGroup}>

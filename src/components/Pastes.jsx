@@ -9,15 +9,20 @@ import styles from './Pastes.module.css';
 const Pastes = () => {
   const allpaste = useSelector((state) => state.paste.pastes);
   const [searchTerm, setSearchTerm] = React.useState(""); // State for search term
+  const [filterLabel, setFilterLabel] = React.useState("all"); // --- ADDED: State for filter label ---
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Filter notes based on search term (Title or Content)
+  // Filter notes based on search term AND selected label
   const filteredData = Array.isArray(allpaste)
-    ? allpaste.filter((paste) =>
-      paste.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      paste.value.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    ? allpaste.filter((paste) => {
+      const matchesSearch = paste.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        paste.value.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesLabel = filterLabel === "all" || paste.label === filterLabel;
+
+      return matchesSearch && matchesLabel;
+    })
     : [];
 
   // --- CHANGED: Dispatch deletePaste (async) instead of remove ---
@@ -55,6 +60,18 @@ const Pastes = () => {
         />
       </div>
 
+      <div className={styles.filterGroup}>
+        {["all", "Minato", "Kushina"].map((l) => (
+          <button
+            key={l}
+            className={`${styles.filterButton} ${filterLabel === l ? styles.filterActive : ''}`}
+            onClick={() => setFilterLabel(l)}
+          >
+            {l === "all" ? "All Notes" : l}
+          </button>
+        ))}
+      </div>
+
       {filteredData.length === 0 ? (
         <div className={styles.emptyState}>
           <div className={styles.emptyIcon}>{searchTerm ? '🔍' : '📝'}</div>
@@ -75,7 +92,14 @@ const Pastes = () => {
 
             return (
               <div key={displayId} className={styles.card}>
-                <h3 className={styles.cardTitle}>{paste.Title}</h3>
+                <div className={styles.cardHeader}>
+                  <h3 className={styles.cardTitle}>{paste.Title}</h3>
+                  {paste.label && paste.label !== "none" && (
+                    <span className={`${styles.badge} ${styles[`badge${paste.label}`]}`}>
+                      {paste.label}
+                    </span>
+                  )}
+                </div>
                 <p className={styles.cardContent}>{paste.value}</p>
                 <div className={styles.cardDate}>
                   🕒 {formatDate(paste.createdAt)}

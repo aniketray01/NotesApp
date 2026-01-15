@@ -14,6 +14,11 @@ const PasteSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    label: {
+        type: String,
+        enum: ["none", "Minato", "Kushina"],
+        default: "none"
+    },
     createdAt: {
         type: Date,
         default: Date.now

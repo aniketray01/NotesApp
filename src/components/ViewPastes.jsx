@@ -7,6 +7,7 @@ import styles from './ViewPastes.module.css';
 const ViewPastes = () => {
   const [Title, setTitle] = useState('');
   const [value, setvalue] = useState('');
+  const [label, setLabel] = useState('none'); // --- ADDED: State for label ---
   const [searchParam, setsearchParam] = useSearchParams();
   const pastid = searchParam.get("id");
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const ViewPastes = () => {
     if (!pastid) {
       setTitle("");
       setvalue("");
+      setLabel("none");
     };
 
     // --- CHANGED: Support both 'id' and '_id' from MongoDB ---
@@ -24,6 +26,7 @@ const ViewPastes = () => {
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);
+      setLabel(paste.label || "none");
     }
 
   }, [pastid, allpastes]);
@@ -40,7 +43,7 @@ const ViewPastes = () => {
 
       <div className={styles.viewCard}>
         <div className={styles.readOnlyBadge}>
-          🔒 Read-Only Mode
+          🔒 Read-Only Mode {label !== "none" && `• Categorized as ${label}`}
         </div>
 
         <div className={styles.inputGroup}>
