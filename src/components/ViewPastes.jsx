@@ -19,7 +19,8 @@ const ViewPastes = () => {
     };
 
     // --- CHANGED: Support both 'id' and '_id' from MongoDB ---
-    const paste = allpastes.find((p) => (p.id === pastid || p._id === pastid));
+    // Added defensive Array.isArray check to prevent s.find crashes if API returns non-array
+    const paste = Array.isArray(allpastes) ? allpastes.find((p) => (p.id === pastid || p._id === pastid)) : null;
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);

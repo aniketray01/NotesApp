@@ -50,25 +50,36 @@ export const Slice = createSlice({
     builder
       // Handle fetching all notes
       .addCase(fetchPastes.fulfilled, (state, action) => {
-        state.pastes = action.payload;
-        state.status = 'succeeded';
+        // --- CHANGED: Ensure action.payload is an array to avoid crashes ---
+        if (Array.isArray(action.payload)) {
+          state.pastes = action.payload;
+          state.status = 'succeeded';
+        } else {
+          state.pastes = [];
+          console.error("API response is not an array:", action.payload);
+        }
       })
       // Handle adding a note
       .addCase(addPaste.fulfilled, (state, action) => {
+        if (!Array.isArray(state.pastes)) state.pastes = [];
         state.pastes.push(action.payload);
         toast.success('Note added');
       })
       // Handle updating a note
       .addCase(updatePaste.fulfilled, (state, action) => {
-        const index = state.pastes.findIndex(p => (p._id || p.id) === (action.payload._id || action.payload.id));
-        if (index !== -1) {
-          state.pastes[index] = action.payload;
+        if (Array.isArray(state.pastes)) {
+          const index = state.pastes.findIndex(p => (p._id || p.id) === (action.payload._id || action.payload.id));
+          if (index !== -1) {
+            state.pastes[index] = action.payload;
+          }
         }
         toast.success('Note updated');
       })
       // Handle deleting a note
       .addCase(deletePaste.fulfilled, (state, action) => {
-        state.pastes = state.pastes.filter(p => (p._id || p.id) !== action.payload);
+        if (Array.isArray(state.pastes)) {
+          state.pastes = state.pastes.filter(p => (p._id || p.id) !== action.payload);
+        }
         toast.success('Note deleted');
       })
       .addCase(fetchPastes.rejected, (state, action) => {
