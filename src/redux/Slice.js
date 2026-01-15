@@ -2,9 +2,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-// Base URL for the backend API
 // --- CHANGED: Use environment variable for production (Render URL) ---
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api/pastes";
+// We automatically append /api/pastes if it's not present in the environment variable
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    // If it already contains /api/pastes, use it as is, otherwise append it
+    return envUrl.includes("/api/pastes") ? envUrl : `${envUrl.replace(/\/$/, "")}/api/pastes`;
+  }
+  return "http://localhost:5000/api/pastes";
+};
+
+const API_URL = getApiUrl();
 
 // --- CHANGED: Added Async Thunks for MongoDB DB Operations ---
 
