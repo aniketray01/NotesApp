@@ -31,8 +31,9 @@ const Pastes = () => {
   // Filter notes based on search term AND selected label
   const filteredData = Array.isArray(allpaste)
     ? allpaste.filter((paste) => {
+      const plainText = paste.value.replace(/<[^>]*>/g, '');
       const matchesSearch = paste.Title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        paste.value.toLowerCase().includes(searchTerm.toLowerCase());
+        plainText.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesLabel = filterLabel === "all" || paste.label === filterLabel;
 
@@ -40,7 +41,6 @@ const Pastes = () => {
     })
     : [];
 
-  // --- CHANGED: Dispatch deletePaste (async) instead of remove ---
   const Removed = (id) => {
     dispatch(deletePaste(id));
   }
@@ -55,8 +55,9 @@ const Pastes = () => {
   }
 
   const getReadingTime = (text) => {
+    const plainText = text.replace(/<[^>]*>/g, '');
     const wordsPerMinute = 200;
-    const words = text.trim().split(/\s+/).length;
+    const words = plainText.trim().split(/\s+/).length;
     const time = Math.ceil(words / wordsPerMinute);
     return `${time} min read`;
   }
@@ -157,7 +158,7 @@ const Pastes = () => {
                     )}
                   </div>
 
-                  <p className={styles.cardContent}>{paste.value}</p>
+                  <p className={styles.cardContent}>{paste.value.replace(/<[^>]*>/g, '')}</p>
 
                   <div className={styles.cardMeta}>
                     <div className={styles.cardDate}>
@@ -186,7 +187,7 @@ const Pastes = () => {
                       <Pencil size={16} />
                     </button>
                     <CopyToClipboard
-                      text={paste.value}
+                      text={paste.value.replace(/<[^>]*>/g, '')}
                       onCopy={() => toast.success("Copied to clipboard!")}
                     >
                       <button
@@ -240,7 +241,7 @@ const Pastes = () => {
             </div>
             <div className={styles.previewContent}>
               <FileText size={16} className={styles.previewIcon} />
-              <p>{hoveredPaste.value}</p>
+              <p>{hoveredPaste.value.replace(/<[^>]*>/g, '')}</p>
             </div>
             <div className={styles.previewFooter}>
               Hover over a note to see quick details

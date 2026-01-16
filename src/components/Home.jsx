@@ -1,65 +1,76 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { addPaste, updatePaste } from '../redux/Slice';
 import { nanoid } from "@reduxjs/toolkit";
 import { motion } from 'framer-motion';
 import { Plus, Save, Trash2, Tag, PenLine, Sparkles, BookOpen, FileText } from 'lucide-react';
+
+// Rich Text Editor
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import styles from './Home.module.css';
 
 const Home = () => {
   const [Title, setTitle] = useState('');
   const [value, setvalue] = useState('');
-  const [label, setLabel] = useState('none'); // --- ADDED: State for label ---
+  const [label, setLabel] = useState('none');
   const [searchParam, setsearchParam] = useSearchParams();
   const pastid = searchParam.get("pasteid");
   const dispatch = useDispatch();
   const allpastes = useSelector((state) => state.paste.pastes);
 
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      ['link', 'clean']
+    ],
+  };
+
   useEffect(() => {
     if (!pastid) {
       setTitle("");
       setvalue("");
-      setLabel("none"); // Reset label when not editing
+      setLabel("none");
     };
 
-    // --- CHANGED: Check both 'id' and '_id' for compatibility ---
-    // Added defensive Array.isArray check to prevent s.find crashes if API returns non-array
     const paste = Array.isArray(allpastes) ? allpastes.find((p) => (p.id === pastid || p._id === pastid)) : null;
     if (paste) {
       setTitle(paste.Title);
       setvalue(paste.value);
-      setLabel(paste.label || "none"); // Set label from existing paste
+      setLabel(paste.label || "none");
     }
 
   }, [pastid, allpastes]);
 
   function Create() {
-    // --- CHANGED: Dispatch async thunks for MongoDB operations ---
     if (pastid) {
+      const existingPaste = Array.isArray(allpastes) ? allpastes.find((p) => (p.id === pastid || p._id === pastid)) : null;
       const data = {
         ...existingPaste,
         Title,
         value,
-        label, // Include label in update
+        label,
       };
-      // Dispatch update to MongoDB
       dispatch(updatePaste(data));
     }
     else {
       const data = {
         Title,
         value,
-        label, // Include label in creation
+        label,
         id: nanoid(),
         createdAt: new Date().toISOString()
       };
-      // Dispatch add to MongoDB
       dispatch(addPaste(data));
     }
     setTitle('');
     setvalue('');
-    setLabel('none'); // Reset label after create/update
+    setLabel('none');
     setsearchParam({});
   }
 
@@ -112,13 +123,16 @@ const Home = () => {
             <FileText size={14} />
             <label className={styles.label}>Content</label>
           </div>
-          <textarea
-            value={value}
-            placeholder='Write your note here...'
-            onChange={(e) => { setvalue(e.target.value) }}
-            className={`${styles.input} ${styles.textarea}`}
-            rows={10}
-          ></textarea>
+          <div className={styles.editorWrapper}>
+            <ReactQuill
+              theme="snow"
+              value={value}
+              onChange={setvalue}
+              placeholder="Write your brilliant ideas here..."
+              modules={modules}
+              className={styles.editor}
+            />
+          </div>
         </div>
 
         <div className={styles.inputGroup}>
@@ -144,7 +158,7 @@ const Home = () => {
           <button
             className={`${styles.button} ${styles.buttonPrimary}`}
             onClick={Create}
-            disabled={!Title.trim() || !value.trim()}
+            disabled={!Title.trim() || !value.trim() || value === "<p><br></p>"}
           >
             {pastid ? <Save size={18} /> : <Plus size={18} />}
             <span>{pastid ? "Update Note" : "Create Note"}</span>
@@ -162,4 +176,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default Home;

@@ -76,7 +76,7 @@ const ViewPastes = () => {
             </div>
             <div className={styles.metaItem}>
               <Clock size={14} />
-              <span>{Math.ceil(value.trim().split(/\s+/).length / 200)} min read</span>
+              <span>{Math.ceil(value.replace(/<[^>]*>/g, '').trim().split(/\s+/).length / 200)} min read</span>
             </div>
           </div>
 
@@ -84,7 +84,10 @@ const ViewPastes = () => {
 
           <div className={styles.textAreaWrapper}>
             <FileText size={18} className={styles.contentIcon} />
-            <pre className={styles.noteContent}>{value || "No content available."}</pre>
+            <div
+              className={styles.noteContent}
+              dangerouslySetInnerHTML={{ __html: value || "<p>No content available.</p>" }}
+            />
           </div>
         </div>
       </motion.div>
