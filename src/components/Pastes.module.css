@@ -283,10 +283,10 @@
 
 .previewPane {
     position: fixed;
-    right: 2rem;
+    right: 1rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 350px;
+    width: 310px;
     max-height: 80vh;
     background: var(--bg-card);
     backdrop-filter: blur(32px);
@@ -366,7 +366,7 @@
     padding-top: 1rem;
 }
 
-@media (max-width: 1400px) {
+@media (max-width: 1024px) {
     .previewPane {
         display: none;
     }
