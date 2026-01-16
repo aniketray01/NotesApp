@@ -24,6 +24,7 @@ const Pastes = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [filterLabel, setFilterLabel] = React.useState("all");
   const [hoveredPaste, setHoveredPaste] = React.useState(null);
+  const [previewSide, setPreviewSide] = React.useState("right");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,6 +40,19 @@ const Pastes = () => {
       return matchesSearch && matchesLabel;
     })
     : [];
+
+  const handleMouseEnter = (e, paste) => {
+    const screenWidth = window.innerWidth;
+    const mouseX = e.clientX;
+
+    // If hovering on the right half, show preview on the left
+    if (mouseX > screenWidth / 2) {
+      setPreviewSide("left");
+    } else {
+      setPreviewSide("right");
+    }
+    setHoveredPaste(paste);
+  };
 
   const Removed = (id) => {
     dispatch(deletePaste(id));
@@ -144,7 +158,7 @@ const Pastes = () => {
                   }}
                   key={displayId}
                   className={styles.card}
-                  onMouseEnter={() => setHoveredPaste(paste)}
+                  onMouseEnter={(e) => handleMouseEnter(e, paste)}
                   onMouseLeave={() => setHoveredPaste(null)}
                 >
                   <div className={styles.cardHeader}>
@@ -213,10 +227,10 @@ const Pastes = () => {
       <AnimatePresence>
         {hoveredPaste && (
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: previewSide === 'left' ? -20 : 20 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className={styles.previewPane}
+            exit={{ opacity: 0, x: previewSide === 'left' ? -20 : 20 }}
+            className={`${styles.previewPane} ${styles[`preview${previewSide}`]}`}
           >
             <div className={styles.previewHeader}>
               <h4 className={styles.previewTitle}>{hoveredPaste.Title}</h4>
@@ -249,6 +263,6 @@ const Pastes = () => {
       </AnimatePresence>
     </div>
   )
-};
+}
 
-export default Pastes
+export default Pastes;
