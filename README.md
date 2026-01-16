@@ -82,7 +82,11 @@ npm run dev
 
 ## 📸 Screen Previews
 
-*(Place your professional screenshots here to wow recruiters!)*
+<img width="790" height="872" alt="image" src="https://github.com/user-attachments/assets/e8c20726-c884-4b8f-a571-eaa99318114c" />
+<img width="612" height="417" alt="image" src="https://github.com/user-attachments/assets/018f16eb-ee0f-4deb-84d5-1f0d5effff8b" />
+<img width="634" height="411" alt="image" src="https://github.com/user-attachments/assets/89869189-8bfb-49b3-bdc3-0a59340bf873" />
+
+
 
 > [!TIP]
 > **Pro Tip:** Use the Hover Preview in the "All Notes" layout to quickly reference your longer notes without leaving the gallery.
