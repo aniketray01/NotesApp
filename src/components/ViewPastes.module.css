@@ -1,104 +1,147 @@
 .container {
     max-width: 900px;
     margin: 0 auto;
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 3rem;
+.backButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
 }
 
-.title {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    background: var(--primary-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
+.backButton:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .viewCard {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-xl);
-    padding: 2.5rem;
-    box-shadow: var(--shadow-lg);
-    position: relative;
+    background: var(--bg-card);
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
     overflow: hidden;
+    box-shadow: var(--shadow-premium);
 }
 
-.viewCard::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--accent-gradient);
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-.inputGroup {
-    margin-bottom: 1.5rem;
+.statusBadge,
+.categoryBadge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
+.statusBadge {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
 }
 
-.input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--card-border);
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+.categoryBadge {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(99, 102, 241, 0.2);
 }
 
-.input:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+.contentSection {
+    padding: 3rem 2.5rem;
 }
 
-.textarea {
-    min-height: 300px;
-    font-family: 'Inter', monospace;
-    line-height: 1.6;
-    resize: vertical;
+.noteTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
 }
 
-.readOnlyBadge {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: var(--accent-gradient);
-    color: white;
-    border-radius: var(--radius-md);
+.metaRow {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
     font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border-subtle) 0%, transparent 100%);
+    margin-bottom: 2.5rem;
+}
+
+.textAreaWrapper {
+    position: relative;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.contentIcon {
+    position: absolute;
+    top: -0.5rem;
+    left: 2rem;
+    background: var(--bg-deep);
+    padding: 0.25rem;
+    color: var(--primary);
+    opacity: 0.8;
+}
+
+.noteContent {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 @media (max-width: 768px) {
-    .viewCard {
-        padding: 1.5rem;
+    .contentSection {
+        padding: 2rem 1.5rem;
     }
 
-    .title {
-        font-size: 2rem;
+    .cardHeader {
+        padding: 1rem 1.5rem;
+    }
+
+    .noteTitle {
+        font-size: 1.75rem;
+    }
+
+    .metaRow {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 }

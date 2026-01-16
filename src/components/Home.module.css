@@ -1,16 +1,18 @@
 .container {
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 }
 
 .title {
     font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
     margin-bottom: 0.5rem;
     background: var(--primary-gradient);
     -webkit-background-clip: text;
@@ -19,157 +21,160 @@
 }
 
 .subtitle {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
+    color: var(--text-dim);
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.headerIcon {
+    color: var(--primary);
+}
+
+.labelWithIcon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    margin-bottom: 0.25rem;
+}
+
+.labelWithIcon svg {
+    opacity: 0.6;
 }
 
 .form {
-    background: var(--card-bg);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-xl);
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
     padding: 2.5rem;
-    box-shadow: var(--shadow-lg);
-    transition: all 0.3s ease;
-}
-
-.form:hover {
-    border-color: rgba(102, 126, 234, 0.3);
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(102, 126, 234, 0.2);
+    box-shadow: var(--shadow-premium);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .inputGroup {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .label {
-    display: block;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
     font-weight: 600;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.875rem 1.25rem;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: var(--shadow-accent);
+}
+
+.textarea {
+    min-height: 300px;
+    line-height: 1.7;
+    resize: vertical;
+    font-family: 'Inter', system-ui, sans-serif;
 }
 
 .labelGroup {
     display: flex;
     gap: 0.75rem;
-    margin-top: 0.5rem;
 }
 
 .labelButton {
-    padding: 0.6rem 1.25rem;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--card-border);
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .labelButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(102, 126, 234, 0.5);
-    color: var(--text-primary);
+    color: var(--text-main);
+    border-color: var(--text-muted);
 }
 
 .labelActive {
-    background: var(--primary-gradient);
-    border-color: transparent;
-    color: var(--text-primary);
-    box-shadow: var(--shadow-sm);
-}
-
-.input {
-    width: 100%;
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--card-border);
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-.input::placeholder {
-    color: var(--text-muted);
-}
-
-.input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1), var(--shadow-glow);
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-1px);
-}
-
-.textarea {
-    min-height: 200px;
-    font-family: 'Inter', monospace;
-    line-height: 1.6;
-    resize: vertical;
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-accent);
 }
 
 .buttonGroup {
     display: flex;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .button {
     flex: 1;
-    padding: 1rem 2rem;
+    padding: 0.875rem 1.5rem;
     border-radius: var(--radius-md);
-    border: none;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
-    position: relative;
-    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .buttonPrimary {
     background: var(--primary-gradient);
-    color: var(--text-primary);
+    color: white;
+    border: none;
+    box-shadow: var(--shadow-accent);
+}
+
+.buttonPrimary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
 
 .buttonSecondary {
-    background: var(--secondary-gradient);
-    color: var(--text-primary);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-dim);
 }
 
-.button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+.buttonSecondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border-color: var(--text-muted);
 }
 
-.button:hover::before {
-    left: 100%;
-}
-
-.button:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow);
-}
-
-.button:active {
-    transform: translateY(-1px);
-}
-
-.icon {
-    margin-right: 0.5rem;
+.button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
 }
 
 @media (max-width: 768px) {

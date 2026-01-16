@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { addPaste, updatePaste } from '../redux/Slice';
 import { nanoid } from "@reduxjs/toolkit";
+import { motion } from 'framer-motion';
+import { Plus, Save, Trash2, Tag, PenLine, Sparkles, BookOpen, FileText } from 'lucide-react';
 import styles from './Home.module.css';
 
 const Home = () => {
@@ -70,18 +72,32 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className={styles.header}
+      >
         <h1 className={styles.title}>
-          {pastid ? '✏️ Edit Note' : '✨ Create New Note'}
+          {pastid ? <PenLine size={32} className={styles.headerIcon} /> : <Sparkles size={32} className={styles.headerIcon} />}
+          <span>{pastid ? 'Edit Note' : 'Create New Note'}</span>
         </h1>
         <p className={styles.subtitle}>
           {pastid ? 'Update your note below' : 'Capture your thoughts and ideas'}
         </p>
-      </div>
+      </motion.div>
 
-      <div className={styles.form}>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className={styles.form}
+      >
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Title</label>
+          <div className={styles.labelWithIcon}>
+            <BookOpen size={14} />
+            <label className={styles.label}>Title</label>
+          </div>
           <input
             type="text"
             placeholder='Enter a catchy title...'
@@ -92,7 +108,10 @@ const Home = () => {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Content</label>
+          <div className={styles.labelWithIcon}>
+            <FileText size={14} />
+            <label className={styles.label}>Content</label>
+          </div>
           <textarea
             value={value}
             placeholder='Write your note here...'
@@ -103,7 +122,10 @@ const Home = () => {
         </div>
 
         <div className={styles.inputGroup}>
-          <label className={styles.label}>Select Label</label>
+          <div className={styles.labelWithIcon}>
+            <Tag size={14} />
+            <label className={styles.label}>Category</label>
+          </div>
           <div className={styles.labelGroup}>
             {["none", "Minato", "Kushina"].map((l) => (
               <button
@@ -124,16 +146,18 @@ const Home = () => {
             onClick={Create}
             disabled={!Title.trim() || !value.trim()}
           >
-            {pastid ? "💾 Update Note" : "✨ Create Note"}
+            {pastid ? <Save size={18} /> : <Plus size={18} />}
+            <span>{pastid ? "Update Note" : "Create Note"}</span>
           </button>
           <button
             className={`${styles.button} ${styles.buttonSecondary}`}
             onClick={handleClear}
           >
-            🗑️ Clear
+            <Trash2 size={18} />
+            <span>Clear</span>
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
