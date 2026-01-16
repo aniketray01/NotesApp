@@ -72,11 +72,6 @@
     flex-wrap: wrap;
 }
 
-.filterGroupIcon {
-    color: var(--text-muted);
-    margin-right: 0.25rem;
-}
-
 .filterButton {
     padding: 0.5rem 1.25rem;
     border-radius: var(--radius-full);

@@ -13,7 +13,6 @@ import {
   Trash2,
   Clock,
   Inbox,
-  Filter,
   Tag,
   FileText
 } from 'lucide-react';
@@ -85,7 +84,6 @@ const Pastes = () => {
       </div>
 
       <div className={styles.filterGroup}>
-        <Filter size={16} className={styles.filterGroupIcon} />
         {["all", "Minato", "Kushina"].map((l) => (
           <button
             key={l}
