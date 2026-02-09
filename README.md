@@ -102,7 +102,7 @@ npm run dev
 ---
 
 ## 📄 License
-This project is licensed under the MIT License.
+This project is licensed under the Minato License.
 
 ## 🤝 Contact
 **Aniket Ray** - [GitHub](https://github.com/aniketray01) | [LinkedIn](https://www.linkedin.com/in/aniket-ray/)
